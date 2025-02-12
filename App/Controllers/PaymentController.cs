@@ -6,8 +6,10 @@ using PaymentProcessingSystem.Requests;
 
 namespace PaymentProcessingSystem.Controllers;
 
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/payments")]
+//[Route("api/v1.0/payments")]
 [ApiController]
-[Route("[controller]")]
 public class PaymentController : ControllerBase
 {    
     private readonly ILogger<PaymentController> _logger;
@@ -24,7 +26,7 @@ public class PaymentController : ControllerBase
         _systemClock = systemClock;
     }
 
-    [HttpPost("Send")]
+    [HttpPost("send")]
     public async Task<StatusCodeResult> MakePaymentAsync(ProcessPayment model)
     {
         var request = new ProcessPaymentRequest

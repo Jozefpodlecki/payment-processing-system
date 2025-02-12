@@ -21,7 +21,7 @@ namespace Simulator
                 Amount = 100,
                 PaymentMethod = "CreditCard"
             };
-            await _httpClient.PostAsJsonAsync("Payment/Send", request);
+            await _httpClient.PostAsJsonAsync("api/v1.0/payments/send", request);
         }
     }
 }

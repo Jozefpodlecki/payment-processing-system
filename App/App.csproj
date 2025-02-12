@@ -12,13 +12,13 @@
     <PackageReference Include="MassTransit.AspNetCore" Version="7.3.1" />
     <PackageReference Include="MassTransit.RabbitMQ" Version="8.3.6" />
     <PackageReference Include="MediatR" Version="12.4.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.1" />
     <PackageReference Include="Aspire.Hosting" Version="9.0.0" />
     <PackageReference Include="Aspire.Hosting.Azure.CosmosDB" Version="9.0.0" />
-	<PackageReference Include="Microsoft.Azure.Cosmos" Version="3.47.0" />
+	  <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.47.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.2" />
     <PackageReference Include="Microsoft.Extensions.Azure" Version="1.10.0" />
-    <!-- <PackageReference Include="Aspire.Hosting.Azure.CosmosDB" Version="9.0.0" /> -->
   </ItemGroup>
 
   <ItemGroup>

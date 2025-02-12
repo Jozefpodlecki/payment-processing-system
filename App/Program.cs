@@ -1,4 +1,5 @@
 using MassTransit;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Internal;
 using PaymentProcessingSystem.Consumers;
@@ -21,16 +22,24 @@ internal class Program
 
         builder.Services.AddMassTransit(x =>
         {
+            x.AddConsumer<ProcessPaymentConsumer>();
             x.UsingRabbitMq();
         });
 
-        var busControl = Bus.Factory.CreateUsingRabbitMq(cfg =>
+        builder.Services.AddApiVersioning(options =>
         {
-            cfg.ReceiveEndpoint("make-payment-event", ev =>
-            {
-                ev.Consumer<ProcessPaymentConsumer>();
-            });
+            options.AssumeDefaultVersionWhenUnspecified = true;
+            options.DefaultApiVersion = new ApiVersion(1, 0);
+            options.ReportApiVersions = true;
         });
+
+        //var busControl = Bus.Factory.CreateUsingRabbitMq(cfg =>
+        //{
+        //    cfg.ReceiveEndpoint("make-payment-event", ev =>
+        //    {
+        //        ev.Consumer<ProcessPaymentConsumer>();
+        //    });
+        //});
 
         builder.Services.AddMediatR(cf => cf.RegisterServicesFromAssembly(typeof(Program).Assembly));
         builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();

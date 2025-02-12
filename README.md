@@ -55,3 +55,7 @@ Get-CosmosDbEmulatorStatus
 ```
 dotnet new gitignore
 ```
+
+```
+dotnet dev-certs https --trust
+```

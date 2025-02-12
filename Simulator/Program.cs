@@ -18,7 +18,12 @@ internal class Program
                     var configuration = context.Configuration;
                     var baseUrl = configuration["ApiSettings:BaseUrl"];
                     client.BaseAddress = new Uri(baseUrl!);
+
                 });
+                //.ConfigurePrimaryHttpMessageHandler(_ => new HttpClientHandler
+                //{
+                //    ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; }
+                //});
                 services.AddSingleton<Runner>();
                 services.AddSingleton<IConfiguration>(new ConfigurationBuilder()
                     .AddJsonFile("appsettings.json", optional: true)
