@@ -1,7 +1,7 @@
+using Abstractions;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Cosmos;
-using Microsoft.Extensions.Internal;
 using PaymentProcessingSystem.Consumers;
 using PaymentProcessingSystem.Repositories;
 
@@ -43,7 +43,7 @@ internal class Program
 
         builder.Services.AddMediatR(cf => cf.RegisterServicesFromAssembly(typeof(Program).Assembly));
         builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
-        builder.Services.AddSingleton<ISystemClock, SystemClock>();
+        builder.Services.AddAbstractions();
         builder.Services.AddSingleton(serviceProvider =>
         {
             var section = builder.Configuration.GetSection("CosmosDb");

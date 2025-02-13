@@ -49,6 +49,8 @@ Get-CosmosDbEmulatorStatus
 - https://stackoverflow.com/questions/69872189/how-to-add-cosmosdb-to-net-6-webapi
 - https://brettmckenzie.net/posts/the-input-content-is-invalid-because-the-require-properties-id-are-missing/
 - https://medium.com/codenx/implement-mediator-pattern-with-mediatr-in-c-8a271d7b9901
+- https://stackoverflow.com/questions/52939211/the-ssl-connection-could-not-be-established
+- https://masstransit.io/documentation/concepts/messages
 
 ## Misc
 

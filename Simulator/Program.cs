@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Client;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Simulator;
@@ -13,6 +14,7 @@ internal class Program
             })
             .ConfigureServices((context, services) =>
             {
+                services.AddPaymentProcessingApi();
                 services.AddHttpClient("Api", client =>
                 {
                     var configuration = context.Configuration;

@@ -5,7 +5,7 @@ namespace PaymentProcessingSystem.Abstractions.Models
     public class ProcessPayment
     {
         [Required]
-        public string UserId { get; set; }
+        public Guid UserId { get; set; }
 
         [Required]
         public decimal Amount { get; set; }

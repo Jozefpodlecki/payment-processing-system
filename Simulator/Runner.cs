@@ -1,27 +1,28 @@
-﻿using PaymentProcessingSystem.Abstractions.Models;
+﻿using Client;
+using PaymentProcessingSystem.Abstractions.Models;
 using System.Net.Http.Json;
 
 namespace Simulator
 {
     internal class Runner
     {
-        private readonly HttpClient _httpClient;
+        private readonly PaymentProcessingApi _apiClient;
 
-        public Runner(IHttpClientFactory httpClientFactory)
+        public Runner(PaymentProcessingApi apiClient)
         {
-            _httpClient = httpClientFactory.CreateClient("Api");
-
+            apiClient = apiClient;
         }
 
         public async Task RunAsync()
         {
             var request = new ProcessPayment
             {
-                UserId = "123",
+                UserId = Guid.NewGuid(),
                 Amount = 100,
                 PaymentMethod = "CreditCard"
             };
-            await _httpClient.PostAsJsonAsync("api/v1.0/payments/send", request);
+
+            await _apiClient.ProcessPaymentAsync(request);
         }
     }
 }
