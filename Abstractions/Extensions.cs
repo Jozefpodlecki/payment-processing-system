@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Abstractions
+namespace PaymentProcessingSystem.Abstractions
 {
     public static class Extensions
     {

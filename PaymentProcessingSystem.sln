@@ -13,30 +13,47 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csproj", "{73AD6303-4F8A-4452-82EB-03CAFC33EFF6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client", "Client\Client.csproj", "{73AD6303-4F8A-4452-82EB-03CAFC33EFF6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppTests", "AppTests\AppTests.csproj", "{3E5D369C-AE8A-468B-8F93-8334802E194D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		App+Simulator|Any CPU = App+Simulator|Any CPU
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6D6F4680-8EA5-54E7-4226-6BD0ECCE7ECC}.App+Simulator|Any CPU.ActiveCfg = App+Simulator|Any CPU
+		{6D6F4680-8EA5-54E7-4226-6BD0ECCE7ECC}.App+Simulator|Any CPU.Build.0 = App+Simulator|Any CPU
 		{6D6F4680-8EA5-54E7-4226-6BD0ECCE7ECC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6D6F4680-8EA5-54E7-4226-6BD0ECCE7ECC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D6F4680-8EA5-54E7-4226-6BD0ECCE7ECC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D6F4680-8EA5-54E7-4226-6BD0ECCE7ECC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEB60849-511B-408D-8926-C65B99AF8C59}.App+Simulator|Any CPU.ActiveCfg = App+Simulator|Any CPU
+		{FEB60849-511B-408D-8926-C65B99AF8C59}.App+Simulator|Any CPU.Build.0 = App+Simulator|Any CPU
 		{FEB60849-511B-408D-8926-C65B99AF8C59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FEB60849-511B-408D-8926-C65B99AF8C59}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FEB60849-511B-408D-8926-C65B99AF8C59}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FEB60849-511B-408D-8926-C65B99AF8C59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8928CB4-9EBB-4235-B3A6-DF25EDEAFD2A}.App+Simulator|Any CPU.ActiveCfg = App+Simulator|Any CPU
+		{A8928CB4-9EBB-4235-B3A6-DF25EDEAFD2A}.App+Simulator|Any CPU.Build.0 = App+Simulator|Any CPU
 		{A8928CB4-9EBB-4235-B3A6-DF25EDEAFD2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A8928CB4-9EBB-4235-B3A6-DF25EDEAFD2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8928CB4-9EBB-4235-B3A6-DF25EDEAFD2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A8928CB4-9EBB-4235-B3A6-DF25EDEAFD2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73AD6303-4F8A-4452-82EB-03CAFC33EFF6}.App+Simulator|Any CPU.ActiveCfg = App+Simulator|Any CPU
+		{73AD6303-4F8A-4452-82EB-03CAFC33EFF6}.App+Simulator|Any CPU.Build.0 = App+Simulator|Any CPU
 		{73AD6303-4F8A-4452-82EB-03CAFC33EFF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{73AD6303-4F8A-4452-82EB-03CAFC33EFF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73AD6303-4F8A-4452-82EB-03CAFC33EFF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{73AD6303-4F8A-4452-82EB-03CAFC33EFF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E5D369C-AE8A-468B-8F93-8334802E194D}.App+Simulator|Any CPU.ActiveCfg = App+Simulator|Any CPU
+		{3E5D369C-AE8A-468B-8F93-8334802E194D}.App+Simulator|Any CPU.Build.0 = App+Simulator|Any CPU
+		{3E5D369C-AE8A-468B-8F93-8334802E194D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E5D369C-AE8A-468B-8F93-8334802E194D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E5D369C-AE8A-468B-8F93-8334802E194D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E5D369C-AE8A-468B-8F93-8334802E194D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

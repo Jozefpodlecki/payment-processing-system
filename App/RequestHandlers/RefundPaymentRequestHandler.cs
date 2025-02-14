@@ -1,8 +1,8 @@
-﻿using Abstractions;
-using MassTransit;
+﻿using MassTransit;
 using MediatR;
-using PaymentProcessingSystem.Events;
+using PaymentProcessingSystem.Abstractions;
 using PaymentProcessingSystem.Models;
+using PaymentProcessingSystem.Models.Events;
 using PaymentProcessingSystem.Models.Reponse;
 using PaymentProcessingSystem.Repositories;
 using PaymentProcessingSystem.Requests;

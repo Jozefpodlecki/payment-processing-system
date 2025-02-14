@@ -1,8 +1,8 @@
 ﻿using System.Buffers.Binary;
 
-namespace Abstractions
+namespace PaymentProcessingSystem.Abstractions
 {
-    public class SequentialGuidGenerator : IGuidGenerator
+    internal sealed class SequentialGuidGenerator : IGuidGenerator
     {
         private readonly byte[] _guidBytes;
         private readonly bool _isLittleEndian;

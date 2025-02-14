@@ -1,4 +1,4 @@
-﻿namespace Abstractions
+﻿namespace PaymentProcessingSystem.Abstractions
 {
     public interface IGuidGenerator
     {

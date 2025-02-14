@@ -1,4 +1,4 @@
-﻿namespace PaymentProcessingSystem.Events
+﻿namespace PaymentProcessingSystem.Models.Events
 {
     public class PaymentRefundedEvent
     {

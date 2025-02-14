@@ -30,6 +30,14 @@ Import-Module "$env:ProgramFiles\Azure Cosmos DB Emulator\PSModules\Microsoft.Az
 Start-CosmosDbEmulator
 ```
 
+Optionally you can add above `Import-Module` to profile
+
+```
+New-Item -ItemType File -Path $PROFILE -Force
+notepad $PROFILE
+```
+
+
 Check status
 
 ```ps1

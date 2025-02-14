@@ -11,6 +11,9 @@ namespace PaymentProcessingSystem.Abstractions.Models
         public decimal Amount { get; set; }
 
         [Required]
+        public Currency Currency { get; set; }
+
+        [Required]
         public string PaymentMethod { get; set; }
     }
 }

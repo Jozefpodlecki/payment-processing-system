@@ -1,8 +1,8 @@
-﻿using Abstractions;
-using MassTransit;
+﻿using MassTransit;
 using MediatR;
-using PaymentProcessingSystem.Events;
+using PaymentProcessingSystem.Abstractions;
 using PaymentProcessingSystem.Models;
+using PaymentProcessingSystem.Models.Events;
 using PaymentProcessingSystem.Models.Response;
 using PaymentProcessingSystem.Repositories;
 using PaymentProcessingSystem.Requests;
@@ -30,26 +30,25 @@ namespace PaymentProcessingSystem.RequestHandlers
 
         public async Task<CancelPaymentResponse> Handle(CancelPaymentRequest request, CancellationToken cancellationToken)
         {
+            var response = new CancelPaymentResponse();
             var payment = await _paymentRepository.GetByIdAsync(request.PaymentId, request.UserId);
 
             if (payment == null)
             {
                 _logger.LogWarning($"Payment with ID {request.PaymentId} and UserId {request.UserId} not found.");
-                return new CancelPaymentResponse
-                {
-                    IsSuccess = false,
-                    Message = "Payment not found."
-                };
+                response.IsSuccess = false;
+                response.Message = "Payment not found.";
+
+                return response;
             }
 
             if (payment.Status != PaymentStatus.Pending)
             {
                 _logger.LogWarning($"Payment with ID {request.PaymentId} cannot be canceled because it is in {payment.Status} status.");
-                return new CancelPaymentResponse
-                {
-                    IsSuccess = false,
-                    Message = $"Payment cannot be canceled because it is in {payment.Status} status."
-                };
+                response.IsSuccess = false;
+                response.Message = $"Payment cannot be canceled because it is in {payment.Status} status.";
+
+                return response;
             }
 
             payment.Status = PaymentStatus.Cancelled;
@@ -69,22 +68,20 @@ namespace PaymentProcessingSystem.RequestHandlers
 
                 await _publishEndpoint.Publish(eventObj, cancellationToken);
 
-                return new CancelPaymentResponse
-                {
-                    IsSuccess = true,
-                    Message = "Payment canceled successfully.",
-                    UpdatedStatus = payment.Status,
-                    CancelledOn = payment.CancelledOn
-                };
+                response.IsSuccess = true;
+                response.Message = "Payment canceled successfully.";
+                response.UpdatedStatus = payment.Status;
+                response.CancelledOn = payment.CancelledOn;
+
+                return response;
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"An error occurred while canceling payment with ID {request.PaymentId}.");
-                return new CancelPaymentResponse
-                {
-                    IsSuccess = false,
-                    Message = "An error occurred while canceling the payment."
-                };
+                response.IsSuccess = false;
+                response.Message = "An error occurred while canceling the payment.";
+
+                return response;
             }
         }
     }

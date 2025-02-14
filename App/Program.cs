@@ -2,8 +2,12 @@ using Abstractions;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Cosmos;
+using PaymentProcessingSystem.Abstractions;
 using PaymentProcessingSystem.Consumers;
+using PaymentProcessingSystem.Gateways;
 using PaymentProcessingSystem.Repositories;
+using PaymentProcessingSystem.Services;
+using Stripe;
 
 internal class Program
 {
@@ -19,6 +23,8 @@ internal class Program
         //        {
         //            emulator.WithGatewayPort(7777);
         //        });
+
+        builder.Configuration.AddUserSecrets<Program>();
 
         builder.Services.AddMassTransit(x =>
         {
@@ -43,7 +49,9 @@ internal class Program
 
         builder.Services.AddMediatR(cf => cf.RegisterServicesFromAssembly(typeof(Program).Assembly));
         builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
+        builder.Services.AddScoped<IFraudDetectionService, VoidFraudDetectionService>();
         builder.Services.AddAbstractions();
+        builder.Services.AddPaymentGateway(builder.Configuration);
         builder.Services.AddSingleton(serviceProvider =>
         {
             var section = builder.Configuration.GetSection("CosmosDb");

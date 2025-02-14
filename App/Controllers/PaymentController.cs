@@ -1,8 +1,9 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Internal;
+using PaymentProcessingSystem.Abstractions;
 using PaymentProcessingSystem.Abstractions.Models;
 using PaymentProcessingSystem.Models;
+using PaymentProcessingSystem.Models.Response;
 using PaymentProcessingSystem.Requests;
 
 namespace PaymentProcessingSystem.Controllers;
@@ -46,7 +47,13 @@ public class PaymentController : ControllerBase
 
             var result = await _mediator.Send(request);
 
-            return Ok(new { Message = "Payment canceled successfully", PaymentId = model.PaymentId });
+            var response = new ApiResponse
+            {
+                Message = "Payment canceled successfully",
+                PaymentId = model.PaymentId
+            };
+
+            return Ok(response);
         }
         catch (Exception ex)
         {
@@ -74,7 +81,13 @@ public class PaymentController : ControllerBase
 
             var result = await _mediator.Send(request);
 
-            return Ok(new { Message = "Refund processed successfully", RefundId = result.RefundId });
+            var response = new ApiResponse
+            {
+                Message = "Refund processed successfully",
+                RefundId = result.RefundId
+            };
+
+            return Ok(response);
         }
         catch (Exception ex)
         {
@@ -101,9 +114,14 @@ public class PaymentController : ControllerBase
                 ProcessedOn = _systemClock.UtcNow
             };
 
-            await _mediator.Send(request);
+            var handlerResponse = await _mediator.Send(request);
 
-            return Ok();
+            var response = new ApiResponse
+            {
+                PaymentId = handlerResponse.PaymentId
+            };
+
+            return Ok(response);
         }
          catch (Exception ex)
         {

@@ -1,7 +1,7 @@
 ﻿
-namespace Abstractions
+namespace PaymentProcessingSystem.Abstractions
 {
-    public class SystemClock : ISystemClock
+    internal sealed class SystemClock : ISystemClock
     {
         public DateTimeOffset UtcNow => DateTimeOffset.UtcNow;
     }

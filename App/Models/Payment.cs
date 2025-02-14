@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using PaymentProcessingSystem.Abstractions.Models;
 
 namespace PaymentProcessingSystem.Models
 {
@@ -8,6 +9,7 @@ namespace PaymentProcessingSystem.Models
         public Guid Id { get; set; }
         public Guid UserId { get; set; }
         public decimal Amount { get; set; }
+        public Currency Currency { get; set; }
         public string PaymentMethod { get; set; }
         public PaymentStatus Status { get; set; }
         public DateTimeOffset CreatedOn { get; set; }

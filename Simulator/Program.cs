@@ -26,6 +26,7 @@ internal class Program
                 //{
                 //    ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; }
                 //});
+                services.AddSingleton<Random>();
                 services.AddSingleton<Runner>();
                 services.AddSingleton<IConfiguration>(new ConfigurationBuilder()
                     .AddJsonFile("appsettings.json", optional: true)

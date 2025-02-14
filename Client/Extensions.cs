@@ -6,7 +6,7 @@ namespace Client
     {
         public static void AddPaymentProcessingApi(this IServiceCollection services)
         {
-            services.AddSingleton<PaymentProcessingApi>();
+            services.AddSingleton<IPaymentProcessingApi, PaymentProcessingApi>();
         }
     }
 }
