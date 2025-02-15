@@ -13,18 +13,20 @@ namespace PaymentProcessingSystem.RequestHandlers
     {
         private readonly IGuidGenerator _guidGenerator;
         private readonly IPaymentRepository _paymentRepository;
+        private readonly IRefundRepository _refundRepository;
         private readonly ISystemClock _systemClock;
         private readonly IPublishEndpoint _publishEndpoint;
         private readonly ILogger<ProcessPaymentRequestHandler> _logger;
 
         public RefundPaymentRequestHandler(
-            IGuidGenerator guidGenerator,
             IPaymentRepository paymentRepository,
+            IRefundRepository refundRepository,
             ISystemClock systemClock,
             IPublishEndpoint publishEndpoint,
             ILogger<ProcessPaymentRequestHandler> logger)
         {
             _paymentRepository = paymentRepository;
+            _refundRepository = refundRepository;
             _systemClock = systemClock;
             _publishEndpoint = publishEndpoint;
             _logger = logger;
@@ -32,7 +34,7 @@ namespace PaymentProcessingSystem.RequestHandlers
 
         public async Task<RefundPaymentResponse> Handle(RefundPaymentRequest request, CancellationToken cancellationToken)
         {
-            var payment = await _paymentRepository.GetByIdAsync(request.PaymentId, request.UserId);
+            var payment = await _paymentRepository.GetByIdAsync(request.PaymentId, request.UserId, cancellationToken);
 
             if (payment == null)
             {
@@ -69,7 +71,7 @@ namespace PaymentProcessingSystem.RequestHandlers
 
             try
             {
-                await _paymentRepository.SaveRefundAsync(refund, cancellationToken);
+                await _refundRepository.SaveAsync(refund, cancellationToken);
                 await _paymentRepository.UpdateAsync(payment, cancellationToken);
 
                 _logger.LogInformation($"Payment with ID {request.PaymentId} has been refunded.");

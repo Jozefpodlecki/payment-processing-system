@@ -28,6 +28,7 @@ internal class Program
                 //});
                 services.AddSingleton<Random>();
                 services.AddSingleton<Runner>();
+                services.AddSingleton<WebhookInvoker>();
                 services.AddSingleton<IConfiguration>(new ConfigurationBuilder()
                     .AddJsonFile("appsettings.json", optional: true)
                     .Build());

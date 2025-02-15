@@ -27,7 +27,7 @@ Run via powershell ( admin )
 
 ```ps1
 Import-Module "$env:ProgramFiles\Azure Cosmos DB Emulator\PSModules\Microsoft.Azure.CosmosDB.Emulator"
-Start-CosmosDbEmulator
+Start-CosmosDbEmulator -NoWait
 ```
 
 Optionally you can add above `Import-Module` to profile
@@ -59,6 +59,7 @@ Get-CosmosDbEmulatorStatus
 - https://medium.com/codenx/implement-mediator-pattern-with-mediatr-in-c-8a271d7b9901
 - https://stackoverflow.com/questions/52939211/the-ssl-connection-could-not-be-established
 - https://masstransit.io/documentation/concepts/messages
+- https://infinum.com/blog/real-time-data-blazor-webassembly-signalr/
 
 ## Misc
 

@@ -38,14 +38,14 @@ namespace Client
             if (httpResponse.IsSuccessStatusCode)
             {
                 var content = await httpResponse.Content.ReadFromJsonAsync<ApiResponse>(cancellationToken);
-                return content ?? new ApiResponse { Success = true, Message = "Operation completed successfully." };
+                return content ?? new ApiResponse { IsSuccess = true, Message = "Operation completed successfully." };
             }
             else
             {
                 var errorContent = await httpResponse.Content.ReadAsStringAsync(cancellationToken);
                 return new ApiResponse
                 {
-                    Success = false,
+                    IsSuccess = false,
                     Message = $"API request failed with status code: {httpResponse.StatusCode}",
                     Error = errorContent
                 };

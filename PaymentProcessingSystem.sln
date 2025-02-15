@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client", "Client\Client.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppTests", "AppTests\AppTests.csproj", "{3E5D369C-AE8A-468B-8F93-8334802E194D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "Web\Web.csproj", "{C49C0C7D-448B-485B-9F01-DFF48E878B09}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		App+Simulator|Any CPU = App+Simulator|Any CPU
@@ -54,6 +56,12 @@ Global
 		{3E5D369C-AE8A-468B-8F93-8334802E194D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E5D369C-AE8A-468B-8F93-8334802E194D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3E5D369C-AE8A-468B-8F93-8334802E194D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C49C0C7D-448B-485B-9F01-DFF48E878B09}.App+Simulator|Any CPU.ActiveCfg = Debug|Any CPU
+		{C49C0C7D-448B-485B-9F01-DFF48E878B09}.App+Simulator|Any CPU.Build.0 = Debug|Any CPU
+		{C49C0C7D-448B-485B-9F01-DFF48E878B09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C49C0C7D-448B-485B-9F01-DFF48E878B09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C49C0C7D-448B-485B-9F01-DFF48E878B09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C49C0C7D-448B-485B-9F01-DFF48E878B09}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

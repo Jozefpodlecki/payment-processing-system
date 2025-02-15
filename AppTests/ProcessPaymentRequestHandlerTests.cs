@@ -69,8 +69,6 @@ namespace AppTests
             _mockSystemClock.Setup(x => x.UtcNow).Returns(DateTime.UtcNow);
             _mockFraudDetectionService.Setup(x => x.CheckForFraudAsync(request.UserId, request.Amount, request.PaymentMethod, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(false);
-            _mockPaymentGateway.Setup(x => x.ProcessPaymentAsync(It.IsAny<PaymentGatewayProcessRequest>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new PaymentGatewayResponse { IsSuccess = true });
 
             var result = await _handler.Handle(request, CancellationToken.None);
 
@@ -130,10 +128,6 @@ namespace AppTests
             _mockFraudDetectionService
                 .Setup(x => x.CheckForFraudAsync(request.UserId, request.Amount, request.PaymentMethod, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(false);
-
-            _mockPaymentGateway
-                .Setup(x => x.ProcessPaymentAsync(It.IsAny<PaymentGatewayProcessRequest>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new PaymentGatewayResponse { IsSuccess = false, ErrorMessage = "Insufficient funds" });
 
             var result = await _handler.Handle(request, CancellationToken.None);
 

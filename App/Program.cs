@@ -5,9 +5,13 @@ using Microsoft.Azure.Cosmos;
 using PaymentProcessingSystem.Abstractions;
 using PaymentProcessingSystem.Consumers;
 using PaymentProcessingSystem.Gateways;
+using PaymentProcessingSystem.HostedServices;
+using PaymentProcessingSystem.Hubs;
 using PaymentProcessingSystem.Repositories;
 using PaymentProcessingSystem.Services;
 using Stripe;
+using Stripe.Reporting;
+using static PaymentProcessingSystem.Services.StubFraudDetectionService;
 
 internal class Program
 {
@@ -29,6 +33,7 @@ internal class Program
         builder.Services.AddMassTransit(x =>
         {
             x.AddConsumer<ProcessPaymentConsumer>();
+            x.AddConsumer<StatsWorker>();
             x.UsingRabbitMq();
         });
 
@@ -47,26 +52,14 @@ internal class Program
         //    });
         //});
 
+        builder.Services.AddSignalR();
+        builder.Services.AddHostedService<StatsWorker>();
         builder.Services.AddMediatR(cf => cf.RegisterServicesFromAssembly(typeof(Program).Assembly));
-        builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
-        builder.Services.AddScoped<IFraudDetectionService, VoidFraudDetectionService>();
+        builder.Services.AddRepositories();
         builder.Services.AddAbstractions();
+        builder.Services.AddFraudDetectionService(builder.Configuration);
         builder.Services.AddPaymentGateway(builder.Configuration);
-        builder.Services.AddSingleton(serviceProvider =>
-        {
-            var section = builder.Configuration.GetSection("CosmosDb");
-            var connectionString = section["ConnectionString"];
-
-            var client = new CosmosClient(connectionString);
-            
-            Task.Run(async () =>
-            {
-                var database = await client.CreateDatabaseIfNotExistsAsync("PaymentDB");
-                await database.Database.CreateContainerIfNotExistsAsync("Payments", "/UserId");
-            }).Wait();
-
-            return client;
-        });
+        builder.Services.AddCosmosDb(builder.Configuration);
 
         builder.Services.AddControllers();
 
@@ -86,6 +79,7 @@ internal class Program
         app.MapControllers();
 
         app.MapGet("/", () => "Test");
+        app.MapHub<StatsHub>("/stats");
 
         app.Run();
     }

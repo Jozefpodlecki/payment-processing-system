@@ -71,30 +71,6 @@ namespace PaymentProcessingSystem.RequestHandlers
                 return response;
             }
 
-            var paymentGatewayProcessRequest = new PaymentGatewayProcessRequest
-            {
-                Amount = request.Amount,
-                Currency = request.Currency,
-                PaymentMethod = request.PaymentMethod
-            };
-
-            var paymentResult = await _paymentGateway.ProcessPaymentAsync(paymentGatewayProcessRequest, cancellationToken);
-
-            if (paymentResult.IsSuccess)
-            {
-                payment.Status = PaymentStatus.Completed;
-                response.IsSuccess = true;
-                _logger.LogInformation("Payment processed successfully for Payment ID: {PaymentId}", id);
-            }
-            else
-            {
-                payment.Status = PaymentStatus.Failed;
-                response.Message = $"Payment failed for Payment ID: {id}. Reason: {paymentResult.ErrorMessage}";
-                _logger.LogError("Payment failed for Payment ID: {PaymentId}. Reason: {Reason}", id, paymentResult.ErrorMessage);
-            }
-
-            await _paymentRepository.UpdateAsync(payment, cancellationToken);
-
             var eventObj = new PaymentProcessedEvent
             {
                 PaymentId = id,

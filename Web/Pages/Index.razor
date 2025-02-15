@@ -1,0 +1,45 @@
+﻿@page "/"
+@using Microsoft.AspNetCore.SignalR.Client
+
+<PageTitle>Payment Processing Stats</PageTitle>
+
+<div class="">
+    <h1>Payment Processing Stats</h1>
+    <p>Number of payments completed: @stats.CompletedCount</p>
+    <p>Number of payments processed: @stats.ProcessedCount</p>
+    <p>Number of payments failed: @stats.FailedCount</p>
+</div>
+
+@code {
+
+    private HubConnection? _hubConnection;
+    private PaymentProcessingStats stats = new ();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await StartHubConnection();
+        SetRefreshDataListener();
+    }
+
+    private async Task StartHubConnection()
+    {
+        var apiAddress = "https://localhost:7245";
+
+        var sensorDataUrl = ($"{apiAddress}/stats");
+        _hubConnection = new HubConnectionBuilder()
+            .WithUrl(sensorDataUrl)
+            .Build();
+
+        await _hubConnection.StartAsync();
+    }
+
+    private void SetRefreshDataListener()
+    {
+        var methodName = "GetStats";
+
+        _hubConnection!.On<PaymentProcessingStats>(methodName, (data) =>
+        {
+            StateHasChanged();
+        });
+    }
+}

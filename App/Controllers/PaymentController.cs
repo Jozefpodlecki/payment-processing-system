@@ -10,7 +10,6 @@ namespace PaymentProcessingSystem.Controllers;
 
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/payments")]
-//[Route("api/v1.0/payments")]
 [ApiController]
 public class PaymentController : ControllerBase
 {    

@@ -13,6 +13,8 @@ namespace PaymentProcessingSystem.Models
         public string PaymentMethod { get; set; }
         public PaymentStatus Status { get; set; }
         public DateTimeOffset CreatedOn { get; set; }
+        public DateTimeOffset? FaileddOn { get; set; }
+        public DateTimeOffset? CompletedOn { get; set; }
         public DateTimeOffset? CancelledOn { get; set; }
         public DateTimeOffset? RefundedOn { get; set; }
     }
