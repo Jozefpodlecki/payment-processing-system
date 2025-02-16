@@ -8,6 +8,7 @@ namespace PaymentProcessingSystem.Models.Events
         public Guid UserId { get; set; }
         public decimal Amount { get; set; }
         public Currency Currency { get; set; }
+        public string PaymentMethod { get; set; }
         public PaymentStatus Status { get; set; }
         public DateTimeOffset ProcessedOn { get; set; }
     }

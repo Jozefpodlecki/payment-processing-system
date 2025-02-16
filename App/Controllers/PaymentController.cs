@@ -2,8 +2,8 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using PaymentProcessingSystem.Abstractions;
 using PaymentProcessingSystem.Abstractions.Models;
-using PaymentProcessingSystem.Models;
 using PaymentProcessingSystem.Models.Response;
+using PaymentProcessingSystem.Models.View;
 using PaymentProcessingSystem.Requests;
 
 namespace PaymentProcessingSystem.Controllers;
@@ -40,6 +40,7 @@ public class PaymentController : ControllerBase
             var request = new CancelPaymentRequest
             {
                 PaymentId = model.PaymentId,
+                UserId = model.UserId,
                 Reason = model.Reason,
                 ProcessedOn = _systemClock.UtcNow
             };
@@ -74,6 +75,7 @@ public class PaymentController : ControllerBase
             var request = new RefundPaymentRequest
             {
                 PaymentId = model.PaymentId,
+                UserId = model.UserId,
                 Reason = model.Reason,
                 ProcessedOn = _systemClock.UtcNow
             };
@@ -117,7 +119,9 @@ public class PaymentController : ControllerBase
 
             var response = new ApiResponse
             {
-                PaymentId = handlerResponse.PaymentId
+                IsSuccess = handlerResponse.IsSuccess,
+                Message = handlerResponse.Message,
+                PaymentId = handlerResponse.PaymentId,
             };
 
             return Ok(response);

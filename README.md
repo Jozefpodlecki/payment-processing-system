@@ -61,6 +61,11 @@ Get-CosmosDbEmulatorStatus
 - https://masstransit.io/documentation/concepts/messages
 - https://infinum.com/blog/real-time-data-blazor-webassembly-signalr/
 
+
+## Troubleshooting
+
+[Web project was downgrated to 8.0 due to Cannot read properties of undefined (reading ‘getI32’) error](https://developercommunity.visualstudio.com/t/Web-Assembly-Console-App-Net8-to-Net-9/10796112?sort=newest&topics=visual+studio+2017)
+
 ## Misc
 
 ```

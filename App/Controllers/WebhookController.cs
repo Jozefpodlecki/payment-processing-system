@@ -31,10 +31,16 @@ public class WebhookController : ControllerBase
     {
         try
         {
-            var json = new StreamReader(HttpContext.Request.Body).ReadToEnd();
+            var json = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync();
             var paymentResult = JsonConvert.DeserializeObject<PaymentGatewayResponse>(json);
 
-            if(paymentResult.IsSuccess)
+            if (paymentResult == null)
+            {
+                _logger.LogWarning("Failed to deserialize the webhook payload. {}", json);
+                return BadRequest();
+            }
+
+            if (paymentResult.IsSuccess)
             {
                 var request = new ProcessPaymentCompletedRequest
                 {

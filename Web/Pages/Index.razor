@@ -1,45 +1,87 @@
 ﻿@page "/"
 @using Microsoft.AspNetCore.SignalR.Client
+@using PaymentProcessingSystem.Abstractions.Models
+@using Web.Abstractions
+
+@inject ILogger<Index> Logger;
+@inject IHubConnection HubConnection;
+@implements IAsyncDisposable
 
 <PageTitle>Payment Processing Stats</PageTitle>
 
-<div class="">
-    <h1>Payment Processing Stats</h1>
-    <p>Number of payments completed: @stats.CompletedCount</p>
-    <p>Number of payments processed: @stats.ProcessedCount</p>
-    <p>Number of payments failed: @stats.FailedCount</p>
-</div>
+@if (stats != null)
+{
+    <div class="flex-center wh-full">
+        <div class="panel border">
+            <h1>Payment Processing Stats</h1>
+            <div class="stats">
+                @if (stats.UpdatedOn != DateTimeOffset.MinValue)
+                {
+                    <p>Last Updated: @stats.UpdatedOn.ToString("f")</p>
+                }
+                else
+                {
+                    <p>Last Updated: Never</p>
+                }
+                <p>Completed: @stats.CompletedCount</p>
+                <p>Cancelled: @stats.CancelledCount</p>
+                <p>Refunded: @stats.RefundedCount</p>
+                <p>Processed: @stats.ProcessedCount</p>
+                <p>Failed: @stats.FailedCount</p>
+            </div>
+        </div>
+    </div>
+}
 
 @code {
 
-    private HubConnection? _hubConnection;
-    private PaymentProcessingStats stats = new ();
+    private PaymentProcessingStats stats;
 
     protected override async Task OnInitializedAsync()
     {
+        stats = new PaymentProcessingStats
+        {
+            CompletedCount = 0,
+            CancelledCount = 0,
+            RefundedCount = 0,
+            ProcessedCount = 0,
+            FailedCount = 0
+        };
+
         await StartHubConnection();
-        SetRefreshDataListener();
+        SetListener();
     }
 
     private async Task StartHubConnection()
     {
-        var apiAddress = "https://localhost:7245";
-
-        var sensorDataUrl = ($"{apiAddress}/stats");
-        _hubConnection = new HubConnectionBuilder()
-            .WithUrl(sensorDataUrl)
-            .Build();
-
-        await _hubConnection.StartAsync();
+        try
+        {
+            HubConnection.Build();
+            await HubConnection.StartAsync();
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error starting SignalR connection");
+        }
     }
 
-    private void SetRefreshDataListener()
+    private void SetListener()
     {
         var methodName = "GetStats";
+        HubConnection!.On<PaymentProcessingStats>(methodName, OnStatsReceived);
+    }
 
-        _hubConnection!.On<PaymentProcessingStats>(methodName, (data) =>
+    private void OnStatsReceived(PaymentProcessingStats data)
+    {
+        stats = data;
+        StateHasChanged();
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (HubConnection != null)
         {
-            StateHasChanged();
-        });
+            await HubConnection.DisposeAsync();
+        }
     }
 }

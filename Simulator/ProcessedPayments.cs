@@ -1,9 +1,6 @@
-﻿using PaymentProcessingSystem.Abstractions.Models;
-using System.ComponentModel.DataAnnotations;
-
-namespace Simulator
+﻿namespace Simulator
 {
-    internal class ProcessedPayments
+    internal class ProcessedPayment
     {
         public Guid PaymentId { get; set; }
         public Guid UserId { get; set; }

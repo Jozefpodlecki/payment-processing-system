@@ -44,7 +44,7 @@ namespace PaymentProcessingSystem.RequestHandlers
 
             await _paymentRepository.UpdateAsync(payment, cancellationToken);
 
-            var eventObj = new PaymentFailedEvent
+            var eventObj = new PaymentCompletedEvent
             {
                 PaymentId = request.PaymentId,
                 UserId = request.UserId,

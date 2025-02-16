@@ -33,8 +33,11 @@ internal class Program
         builder.Services.AddMassTransit(x =>
         {
             x.AddConsumer<ProcessPaymentConsumer>();
-            x.AddConsumer<StatsWorker>();
-            x.UsingRabbitMq();
+            x.AddConsumer<StatsService>();
+            x.UsingRabbitMq((context, configuration) =>
+            {
+                configuration.ConfigureEndpoints(context);
+            });
         });
 
         builder.Services.AddApiVersioning(options =>
@@ -44,15 +47,10 @@ internal class Program
             options.ReportApiVersions = true;
         });
 
-        //var busControl = Bus.Factory.CreateUsingRabbitMq(cfg =>
-        //{
-        //    cfg.ReceiveEndpoint("make-payment-event", ev =>
-        //    {
-        //        ev.Consumer<ProcessPaymentConsumer>();
-        //    });
-        //});
-
-        builder.Services.AddSignalR();
+        builder.Services.AddSignalR(opt =>
+        {
+            opt.EnableDetailedErrors = true;
+        });
         builder.Services.AddHostedService<StatsWorker>();
         builder.Services.AddMediatR(cf => cf.RegisterServicesFromAssembly(typeof(Program).Assembly));
         builder.Services.AddRepositories();
@@ -75,6 +73,13 @@ internal class Program
         app.UseHttpsRedirection();
 
         app.UseAuthorization();
+
+        app.UseCors(config => config.WithOrigins("https://localhost:7108").AllowAnyHeader().WithMethods("GET"));
+        //app.UseCors(config => 
+        //    config
+        //        .AllowAnyOrigin()
+        //        .AllowAnyHeader()
+        //        .AllowAnyMethod());
 
         app.MapControllers();
 

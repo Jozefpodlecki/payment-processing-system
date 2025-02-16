@@ -21,8 +21,11 @@ namespace Abstractions
 
                 Task.Run(async () =>
                 {
-                    var databaseResponse = await client.CreateDatabaseIfNotExistsAsync("PaymentDB");
-                    var database = databaseResponse.Database;
+                var databaseResponse = await client.CreateDatabaseIfNotExistsAsync("PaymentDB");
+                var database = databaseResponse.Database;
+
+                    //var container = database.GetContainer("Payments");
+                    //await container.DeleteContainerAsync();
 
                     await database.CreateContainerIfNotExistsAsync("Payments", "/UserId");
                     await database.CreateContainerIfNotExistsAsync("Refunds", "/UserId");

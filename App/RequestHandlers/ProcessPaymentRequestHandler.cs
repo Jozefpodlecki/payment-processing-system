@@ -71,6 +71,9 @@ namespace PaymentProcessingSystem.RequestHandlers
                 return response;
             }
 
+            response.IsSuccess = true;
+            response.Message = $"Payment processed successfully. Payment ID: {id}";
+
             var eventObj = new PaymentProcessedEvent
             {
                 PaymentId = id,

@@ -19,12 +19,14 @@ namespace PaymentProcessingSystem.RequestHandlers
         private readonly ILogger<ProcessPaymentRequestHandler> _logger;
 
         public RefundPaymentRequestHandler(
+            IGuidGenerator guidGenerator,
             IPaymentRepository paymentRepository,
             IRefundRepository refundRepository,
             ISystemClock systemClock,
             IPublishEndpoint publishEndpoint,
             ILogger<ProcessPaymentRequestHandler> logger)
         {
+            _guidGenerator = guidGenerator;
             _paymentRepository = paymentRepository;
             _refundRepository = refundRepository;
             _systemClock = systemClock;

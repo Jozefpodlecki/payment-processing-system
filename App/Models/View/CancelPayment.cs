@@ -1,8 +1,9 @@
-﻿namespace PaymentProcessingSystem.Models
+﻿namespace PaymentProcessingSystem.Models.View
 {
     public class CancelPayment
     {
         public Guid PaymentId { get; set; }
+        public Guid UserId { get; set; }
         public string Reason { get; set; }
     }
 }

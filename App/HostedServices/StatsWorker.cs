@@ -1,49 +1,43 @@
 ﻿
 using MassTransit;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.DependencyInjection;
+using PaymentProcessingSystem.Abstractions;
 using PaymentProcessingSystem.Abstractions.Models;
 using PaymentProcessingSystem.Hubs;
 using PaymentProcessingSystem.Models.Events;
+using PaymentProcessingSystem.Services;
 using Stripe.Reporting;
 
 namespace PaymentProcessingSystem.HostedServices
 {
-    public class StatsWorker : BackgroundService, IConsumer<PaymentCompletedEvent>
+    /// <summary>
+    /// Worker that sends payment processing stats to the clients.
+    /// </summary>
+    public class StatsWorker : BackgroundService
     {
         private readonly IHubContext<StatsHub> _statsHub;
         private readonly IServiceProvider _serviceProvider;
-        private PaymentProcessingStats _stats;
 
-        public StatsWorker(IHubContext<StatsHub> statsHub, IServiceProvider serviceProvider)
+        public StatsWorker(
+            IHubContext<StatsHub> statsHub,
+            IServiceProvider serviceProvider)
         {
             _statsHub = statsHub;
             _serviceProvider = serviceProvider;
-
-            _stats = new PaymentProcessingStats
-            {
-                CompletedCount = 10,
-                FailedCount = 2,
-                ProcessedCount = 12
-            };
-        }
-
-        public Task Consume(ConsumeContext<PaymentCompletedEvent> context)
-        {
-            _stats.CompletedCount++;
-            return Task.CompletedTask;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                //using var scope = _serviceProvider.CreateScope();
-
+                using var serviceScope = _serviceProvider.CreateScope();
+                var statsService = serviceScope.ServiceProvider.GetRequiredService<StatsService>();
                 var methodName = "GetStats";
 
                 await _statsHub.Clients.All.SendAsync(
                     methodName,
-                    _stats,
+                    statsService.GetStats(),
                     stoppingToken);
 
                 await Task.Delay(TimeSpan.FromSeconds(1), stoppingToken);

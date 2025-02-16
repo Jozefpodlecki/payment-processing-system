@@ -38,7 +38,11 @@ namespace Client
             if (httpResponse.IsSuccessStatusCode)
             {
                 var content = await httpResponse.Content.ReadFromJsonAsync<ApiResponse>(cancellationToken);
-                return content ?? new ApiResponse { IsSuccess = true, Message = "Operation completed successfully." };
+                return content ?? new ApiResponse
+                {
+                    IsSuccess = true,
+                    Message = "Operation completed successfully."
+                };
             }
             else
             {
@@ -47,7 +51,6 @@ namespace Client
                 {
                     IsSuccess = false,
                     Message = $"API request failed with status code: {httpResponse.StatusCode}",
-                    Error = errorContent
                 };
             }
         }

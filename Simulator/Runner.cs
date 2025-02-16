@@ -40,10 +40,15 @@ namespace Simulator
                 Guid.NewGuid(),
                 Guid.NewGuid(),
                 Guid.NewGuid(),
+                Guid.NewGuid(),
+                Guid.NewGuid(),
+                Guid.NewGuid(),
+                Guid.NewGuid(),
+                Guid.NewGuid(),
                 Guid.NewGuid()
             };
 
-            Console.WriteLine(string.Join("\n", userIds));
+            //Console.WriteLine(string.Join("\n", userIds));
 
             var paymentMethods = new List<string>
             {
@@ -67,12 +72,19 @@ namespace Simulator
                 Currency.CNY
             };
 
-            var processedPayments = new List<ProcessedPayments>();
-            var completedPayments = new List<ProcessedPayments>();
+            var processedPayments = new List<ProcessedPayment>();
+            var completedPayments = new List<ProcessedPayment>();
+            var delay = TimeSpan.FromMilliseconds(500);
 
             while (true)
             {
                 var chance = _random.NextDouble();
+
+                if(processedPayments.Count > 5)
+                {
+                    await CompleteOrFailPaymentsViaWebHookAsync(processedPayments, completedPayments);
+                    await CompleteOrFailPaymentsViaWebHookAsync(processedPayments, completedPayments);
+                }
 
                 if (chance <= .15 && completedPayments.Count > 2)
                 {
@@ -95,24 +107,7 @@ namespace Simulator
 
                 if (chance <= .35 && processedPayments.Count > 2)
                 {
-                    var processedPayment = processedPayments[_random.Next(0, processedPayments.Count)];
-                    var isSuccess = _random.NextDouble() > .25;
-
-                    var payload = new PaymentGatewayResponse
-                    {
-                        IsSuccess = isSuccess,
-                        PaymentId = processedPayment.PaymentId,
-                        UserId = processedPayment.UserId,
-                    };
-
-                    processedPayments.Remove(processedPayment);
-
-                    if (isSuccess)
-                    {
-                        completedPayments.Add(processedPayment);
-                    }
-
-                    await _webhookInvoker.InvokeAsync(payload);
+                    await CompleteOrFailPaymentsViaWebHookAsync(processedPayments, completedPayments);
 
                     continue;
                 }
@@ -125,13 +120,14 @@ namespace Simulator
                     {
                         PaymentId = processedPayment.PaymentId,
                         UserId = processedPayment.UserId,
+                        Reason = GenerateRandomString(50)
                     };
 
                     var response = await _apiClient.CancelPaymentAsync(request);
 
                     processedPayments.Remove(processedPayment);
 
-                    await Task.Delay(TimeSpan.FromSeconds(2));
+                    await Task.Delay(delay);
                     continue;
                 }
 
@@ -154,7 +150,7 @@ namespace Simulator
                     if(response.IsSuccess)
                     {
                         var paymentId = response.PaymentId.Value;
-                        var processedPayment = new ProcessedPayments()
+                        var processedPayment = new ProcessedPayment
                         {
                             PaymentId = paymentId,
                             UserId = userId,
@@ -165,13 +161,35 @@ namespace Simulator
                     }
                     else
                     {
-                        _logger.LogError(response.Error);
+                        _logger.LogError(response.Message);
                     }
 
-                    await Task.Delay(TimeSpan.FromSeconds(2));
+                    await Task.Delay(delay);
                 }
                
             }
+        }
+
+        private async Task CompleteOrFailPaymentsViaWebHookAsync(IList<ProcessedPayment> processedPayments, IList<ProcessedPayment> completedPayments)
+        {
+            var processedPayment = processedPayments[_random.Next(0, processedPayments.Count)];
+            var isSuccess = _random.NextDouble() > .25;
+
+            var payload = new PaymentGatewayResponse
+            {
+                IsSuccess = isSuccess,
+                PaymentId = processedPayment.PaymentId,
+                UserId = processedPayment.UserId,
+            };
+
+            processedPayments.Remove(processedPayment);
+
+            if (isSuccess)
+            {
+                completedPayments.Add(processedPayment);
+            }
+
+            await _webhookInvoker.InvokeAsync(payload);
         }
 
         private string GenerateRandomString(int length)
@@ -179,10 +197,7 @@ namespace Simulator
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
             var randomBytes = new byte[length];
 
-            using (var rng = RandomNumberGenerator.Create())
-            {
-                rng.GetBytes(randomBytes);
-            }
+            _random.NextBytes(randomBytes);
 
             var result = new StringBuilder(length);
 
